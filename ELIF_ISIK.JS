@@ -41,44 +41,98 @@
   color: #2b2f33;
   margin: 0;}
       .elif-carousel{display:flex; gap:16px; padding:16px 20px 24px; overflow-x:auto; scroll-snap-type:x mandatory; background:#fff; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,.05); margin:10px 0}
-      .elif-card{flex:0 0 auto; min-width:200px; max-width:220px; border:1px solid #eee; border-radius:10px; padding:10px; position:relative; background:#fff; scroll-snap-align:start}
+      .elif-card{flex:0 0 auto; min-width:200px; max-width:220px; border:1px solid #eee; border-radius:10px; padding:10px; position:relative; background:#fff; scroll-snap-align:start;padding-bottom: 70px;transition: border 0.2s ease-in-out;}
+      .elif-card:hover {
+   border: 1px solid #ccc;
+  }
       .elif-img{width:100%; border-radius:6px; cursor:pointer}
-     .elif-name {
+  .elif-name {
   font: 400 12px/1.45 "Quicksand-Medium", sans-serif;
   margin: 8px 0;
   color: #2b2f33;
-  min-height: 42px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: calc(1.45em * 2);
 }
+
 .elif-name strong {
   font-weight: 700;
 }
-      .elif-price {
+
+.elif-price {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
   font-family: "Quicksand-SemiBold", sans-serif;
-  font-size: 16px;
   font-weight: 700;
+  font-size: 16px;
   color: #2b2f33;
-  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.2;
 }
+
+.elif-price del {
+  margin-bottom: 0;
+  text-decoration:none;
+    color: #999;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.elif-price > div {
+  margin: 0;
+  padding: 0;
+}
+
+.elif-price .major {
+  font-size: 18px;
+  font-weight: 700;
+}
+  .elif-price .major_del {
+  font-size: 12px;
+  font-weight: 500;
+  }
+    .elif-price .minor_del {
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+.elif-price .minor {
+  font-size: 13px;
+  font-weight: 600;
+  margin-left: 1px;
+}
+
 
 .elif-price strong {
   color: #00a365; 
   font-weight: 700;
 }
 
-.elif-price del {
+.elif-price .old-price {
   color: #999;
+  font-size: 13px;
+  font-weight: 500;
   margin-right: 6px;
-  font-size: 14px;
 }
+
 
 .elif-disc {
   display: inline-block;
-  background: #e6f5e6;
-  color: #00a365;
-  font-size: 13px;
+  background: #00a365;
+  color: #fff;
+  font-size: 12px;
   font-weight: 600;
   padding: 2px 6px;
-  border-radius: 6px;
+  border-radius: 16px;
+  border-radius: 16px;
   margin-left: 6px;
   vertical-align: middle;
 }
@@ -87,7 +141,7 @@
   position: absolute;
   top: 15px;
   right: 10px;
-  width: 17px;
+  width: 15px;
   height: 17px;
   cursor: pointer;
   background: url("data:image/svg+xml;utf8,<svg fill='none' stroke='%23999' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") no-repeat center/contain;
@@ -129,20 +183,30 @@
 `;
 
       const price = document.createElement("div");
-price.className = "elif-price";
+      price.className = "elif-price";
 
-if (p.price < p.original_price) {
-  const discountPercent = Math.round(
-    (1 - p.price / p.original_price) * 100
-  );
-  price.innerHTML =
-    `<del>${p.original_price.toFixed(2)} TL</del>` +
-    `<strong>${p.price.toFixed(2)} TL</strong>` +
-    `<span class="elif-disc">%${discountPercent}</span>`;
-} else {
-  price.innerHTML = `<span>${p.price.toFixed(2)} TL</span>`;
-}
+      const priceMajor = Math.floor(p.price);
+      const priceMinor = (p.price % 1).toFixed(2).substring(2); // '99'
 
+      if (p.price < p.original_price) {
+        const discountPercent = Math.round(
+          (1 - p.price / p.original_price) * 100
+        );
+        const originalMajor = Math.floor(p.original_price);
+        const originalMinor = (p.original_price % 1).toFixed(2).substring(2);
+
+        price.innerHTML = `<div>
+    <del><span class="major_del">${originalMajor}</span><span class="minor_del">,${originalMinor} TL</span></del>
+    <span class="elif-disc">%${discountPercent}</span>
+  </div>
+  <div>
+    <strong style="color:#00a365;"><span class="major">${priceMajor}</span><span class="minor">,${priceMinor} TL</span></strong>
+  </div>`;
+      } else {
+        price.innerHTML = `<div>
+    <span><span class="major">${priceMajor}</span><span class="minor">,${priceMinor} TL</span></span>
+  </div>`;
+      }
 
       const heart = document.createElement("span");
       heart.className = "elif-heart" + (favs.includes(p.id) ? " active" : "");
