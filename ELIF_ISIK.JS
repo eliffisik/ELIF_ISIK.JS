@@ -1,3 +1,7 @@
-const div = document.createElement("div");
-div.textContent = "Merhaba";
-document.body.appendChild(div);
+(function(){
+if(location.pathname !=="/"){
+    console.log("wrong page");
+    return;
+}
+
+})();
