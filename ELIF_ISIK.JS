@@ -34,15 +34,73 @@
 
     const style = document.createElement("style");
     style.textContent = `
-      .elif-carousel-title{font:600 20px/1.3 system-ui; margin:20px 20px 0}
+      .elif-carousel-title{  font-family: "Quicksand-SemiBold", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.22;
+  color: #2b2f33;
+  margin: 0;}
       .elif-carousel{display:flex; gap:16px; padding:16px 20px 24px; overflow-x:auto; scroll-snap-type:x mandatory; background:#fff; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,.05); margin:10px 0}
       .elif-card{flex:0 0 auto; min-width:200px; max-width:220px; border:1px solid #eee; border-radius:10px; padding:10px; position:relative; background:#fff; scroll-snap-align:start}
       .elif-img{width:100%; border-radius:6px; cursor:pointer}
-      .elif-name{font:500 14px/1.35 system-ui; margin:8px 0; min-height:40px}
-      .elif-price{font:600 14px/1.2 system-ui}
-      .elif-price del{color:#999; margin-left:8px}
-      .elif-disc{color:#e53935; margin-left:8px; font-weight:700}
-      .elif-heart{position:absolute; top:10px; right:10px; cursor:pointer; font-size:18px}
+     .elif-name {
+  font: 400 12px/1.45 "Quicksand-Medium", sans-serif;
+  margin: 8px 0;
+  color: #2b2f33;
+  min-height: 42px;
+}
+.elif-name strong {
+  font-weight: 700;
+}
+      .elif-price {
+  font-family: "Quicksand-SemiBold", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2b2f33;
+  margin-top: 6px;
+}
+
+.elif-price strong {
+  color: #00a365; 
+  font-weight: 700;
+}
+
+.elif-price del {
+  color: #999;
+  margin-right: 6px;
+  font-size: 14px;
+}
+
+.elif-disc {
+  display: inline-block;
+  background: #e6f5e6;
+  color: #00a365;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+     .elif-heart {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  width: 17px;
+  height: 17px;
+  cursor: pointer;
+  background: url("data:image/svg+xml;utf8,<svg fill='none' stroke='%23999' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") no-repeat center/contain;
+  transition: filter 0.3s;
+}
+
+.elif-heart:hover {
+  filter: invert(48%) sepia(98%) saturate(1440%) hue-rotate(2deg) brightness(103%) contrast(100%);
+}
+
+.elif-heart.active {
+  background: url("data:image/svg+xml;utf8,<svg fill='%23FF6A00' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") no-repeat center/contain;
+}
       @media (max-width:500px){.elif-card{min-width:65vw}}
     `;
     document.head.appendChild(style);
@@ -66,28 +124,31 @@
 
       const name = document.createElement("p");
       name.className = "elif-name";
-      name.textContent = p.name;
+      name.innerHTML = `
+  <strong>${p.brand || ""}</strong> - ${p.name}
+`;
 
       const price = document.createElement("div");
-      price.className = "elif-price";
-      if (p.price < p.original_price) {
-        const discountPercent = Math.round(
-          (1 - p.price / p.original_price) * 100
-        );
-        price.innerHTML =
-          `<strong>${p.price.toFixed(2)} TL</strong>` +
-          `<del>${p.original_price.toFixed(2)} TL</del>` +
-          `<span class="elif-disc">-${discountPercent}%</span>`;
-      } else {
-        price.innerHTML = `<strong>${p.price.toFixed(2)} TL</strong>`;
-      }
+price.className = "elif-price";
+
+if (p.price < p.original_price) {
+  const discountPercent = Math.round(
+    (1 - p.price / p.original_price) * 100
+  );
+  price.innerHTML =
+    `<del>${p.original_price.toFixed(2)} TL</del>` +
+    `<strong>${p.price.toFixed(2)} TL</strong>` +
+    `<span class="elif-disc">%${discountPercent}</span>`;
+} else {
+  price.innerHTML = `<span>${p.price.toFixed(2)} TL</span>`;
+}
+
 
       const heart = document.createElement("span");
-      heart.className = "elif-heart";
-      heart.innerHTML = favs.includes(p.id) ? "🧡" : "🤍";
+      heart.className = "elif-heart" + (favs.includes(p.id) ? " active" : "");
       heart.onclick = () => {
         const updated = toggleFavorite(p.id);
-        heart.innerHTML = updated.includes(p.id) ? "🧡" : "🤍";
+        heart.classList.toggle("active", updated.includes(p.id));
       };
 
       card.appendChild(img);
