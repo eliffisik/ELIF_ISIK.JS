@@ -5,7 +5,7 @@
     console.log("wrong page");
     return;
   }
-
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   async function loadProducts() {
     const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (cached) return JSON.parse(cached);
@@ -98,7 +98,10 @@ function buildCarousel(products) {
     return { title, wrap };
   }
 
+   (async () => {
 
+  await sleep(1000); // waiting for DOM to be ready
+   })();
 
 
 })();
