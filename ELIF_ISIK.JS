@@ -113,6 +113,10 @@ function buildCarousel(products) {
       const container = refHeading.closest("section") || refHeading.parentElement;
       container?.parentElement?.insertBefore(wrapper, container);
     }
+    else {
+    
+      document.body.prepend(wrapper);
+    }
    })();
 
 
