@@ -17,18 +17,17 @@
     return data;
   }
 
-
-function getFavorites() {
-    return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
-  }
-
-  function toggleFavorite(id) {
-    const favs = getFavorites();
-    const i = favs.indexOf(id);
-    i === -1 ? favs.push(id) : favs.splice(i, 1);
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
-    return favs;
-  }
-
-
+  const style = document.createElement("style");
+  style.textContent = `
+      .elif-carousel-title{font:600 20px/1.3 system-ui; margin:20px 20px 0}
+      .elif-carousel{display:flex; gap:16px; padding:16px 20px 24px; overflow-x:auto; scroll-snap-type:x mandatory; background:#fff; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,.05); margin:10px 0}
+      .elif-card{flex:0 0 auto; min-width:200px; max-width:220px; border:1px solid #eee; border-radius:10px; padding:10px; position:relative; background:#fff; scroll-snap-align:start}
+      .elif-img{width:100%; border-radius:6px; cursor:pointer}
+      .elif-name{font:500 14px/1.35 system-ui; margin:8px 0; min-height:40px}
+      .elif-price{font:600 14px/1.2 system-ui}
+      .elif-price del{color:#999; margin-left:8px}
+      .elif-disc{color:#e53935; margin-left:8px; font-weight:700}
+      .elif-heart{position:absolute; top:10px; right:10px; cursor:pointer; font-size:18px}
+       `;
+  document.head.appendChild(style);
 })();
