@@ -1,9 +1,10 @@
-(function(){
-    const LOCAL_STORAGE_KEY = "carousel_products";
-if(location.pathname !=="/"){
+(function () {
+  const LOCAL_STORAGE_KEY = "carousel_products";
+  const FAVORITES_KEY = "favorite_product_ids";
+  if (location.pathname !== "/") {
     console.log("wrong page");
     return;
-}
+  }
 
   async function loadProducts() {
     const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -15,5 +16,19 @@ if(location.pathname !=="/"){
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
     return data;
   }
+
+
+function getFavorites() {
+    return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+  }
+
+  function toggleFavorite(id) {
+    const favs = getFavorites();
+    const i = favs.indexOf(id);
+    i === -1 ? favs.push(id) : favs.splice(i, 1);
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favs));
+    return favs;
+  }
+
 
 })();
