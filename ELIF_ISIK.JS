@@ -99,8 +99,20 @@ function buildCarousel(products) {
   }
 
    (async () => {
-
+  const products = await loadProducts();
+  const { title, wrap } = buildCarousel(products);
   await sleep(1000); // waiting for DOM to be ready
+   const refHeading = [...document.querySelectorAll("h2")].find(
+      (el) =>
+        el.textContent?.trim().toLowerCase() ===
+        "sizin için seçtiklerimiz".toLowerCase()
+    );
+
+    
+    if (refHeading) {
+      const container = refHeading.closest("section") || refHeading.parentElement;
+      container?.parentElement?.insertBefore(wrapper, container);
+    }
    })();
 
 
