@@ -5,7 +5,7 @@
     console.log("wrong page");
     return;
   }
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   async function loadProducts() {
     const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (cached) return JSON.parse(cached);
@@ -29,7 +29,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     return favs;
   }
 
-function buildCarousel(products) {
+  function buildCarousel(products) {
     const favs = getFavorites();
 
     const style = document.createElement("style");
@@ -71,7 +71,9 @@ function buildCarousel(products) {
       const price = document.createElement("div");
       price.className = "elif-price";
       if (p.price !== p.original_price) {
-        const discountPercent = Math.round((1 - p.price / p.original_price) * 100);
+        const discountPercent = Math.round(
+          (1 - p.price / p.original_price) * 100
+        );
         price.innerHTML =
           `<strong>${p.price.toFixed(2)} TL</strong>` +
           `<del>${p.original_price.toFixed(2)} TL</del>` +
@@ -98,26 +100,26 @@ function buildCarousel(products) {
     return { title, wrap };
   }
 
-   (async () => {
-  const products = await loadProducts();
-  const { title, wrap } = buildCarousel(products);
-  await sleep(1000); // waiting for DOM to be ready
-   const refHeading = [...document.querySelectorAll("h2")].find(
+  (async () => {
+    await sleep(1000); // waiting for DOM to be ready
+    const products = await loadProducts();
+    const { title, wrap } = buildCarousel(products);
+    const wrapper = document.createElement("div");
+    wrapper.appendChild(title);
+    wrapper.appendChild(wrap);
+
+    const refHeading = [...document.querySelectorAll("h2")].find(
       (el) =>
         el.textContent?.trim().toLowerCase() ===
         "sizin için seçtiklerimiz".toLowerCase()
     );
 
-    
     if (refHeading) {
-      const container = refHeading.closest("section") || refHeading.parentElement;
+      const container =
+        refHeading.closest("section") || refHeading.parentElement;
       container?.parentElement?.insertBefore(wrapper, container);
-    }
-    else {
-    
+    } else {
       document.body.prepend(wrapper);
     }
-   })();
-
-
+  })();
 })();
