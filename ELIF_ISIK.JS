@@ -70,7 +70,7 @@
 
       const price = document.createElement("div");
       price.className = "elif-price";
-      if (p.price !== p.original_price) {
+      if (p.price < p.original_price) {
         const discountPercent = Math.round(
           (1 - p.price / p.original_price) * 100
         );
