@@ -1,7 +1,10 @@
 (function () {
   const LOCAL_STORAGE_KEY = "carousel_products";
   const FAVORITES_KEY = "favorite_product_ids";
-  if (location.pathname !== "/") return;
+  if (location.pathname !== "/") {
+    console.log("wrong page");
+    return;
+  }
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -39,7 +42,7 @@
         font-weight: 700;
         line-height: 1.22;
         color: #2b2f33;
-        margin: 0;
+        margin: 0 4px 8px 4px;
       }
 
       .elif-carousel {
@@ -74,6 +77,7 @@
         scroll-snap-align: start;
         padding-bottom: 70px;
         transition: border 0.2s ease-in-out;
+        cursor: pointer;
       }
 
       @media (max-width: 1024px) {
@@ -97,7 +101,6 @@
       .elif-img {
         width: 100%;
         border-radius: 6px;
-        cursor: pointer;
       }
 
       .elif-name {
@@ -151,13 +154,13 @@
         margin-left: 1px;
       }
           .elif-price .major_del {
-  font-size: 12px;
-  font-weight: 500;
-  }
-    .elif-price .minor_del {
-    font-size: 12px;
-    font-weight: 500;
-  }
+           font-size: 12px;
+           font-weight: 500;
+     }
+       .elif-price .minor_del {
+       font-size: 12px;
+      font-weight: 500;
+     }
 
 
       .elif-price strong {
@@ -205,11 +208,15 @@
       const card = document.createElement("div");
       card.className = "elif-card";
 
+      card.onclick = (e) => {
+        if (e.target.closest(".elif-heart")) return;
+        window.open(p.url, "_blank");
+      };
+
       const img = document.createElement("img");
       img.className = "elif-img";
       img.src = p.img;
       img.alt = p.name;
-      img.onclick = () => window.open(p.url, "_blank");
 
       const name = document.createElement("p");
       name.className = "elif-name";
@@ -227,9 +234,19 @@
         );
         const originalMajor = Math.floor(p.original_price);
         const originalMinor = (p.original_price % 1).toFixed(2).substring(2);
-        price.innerHTML = `<div> <del><span class="major_del"><del>${originalMajor}</span><span class="minor_del">,${originalMinor} TL</span></del><span class="elif-disc">%${discountPercent}</span></div><div><strong><span class="major">${priceMajor}</span><span class="minor">,${priceMinor} TL</span></strong></div>`;
+        price.innerHTML = `
+          <div>
+            <del><span class="major_del">${originalMajor}</span><span class="minor_del">,${originalMinor} TL</span></del>
+            <span class="elif-disc">%${discountPercent}</span>
+          </div>
+          <div>
+            <strong><span class="major">${priceMajor}</span><span class="minor">,${priceMinor} TL</span></strong>
+          </div>`;
       } else {
-        price.innerHTML = `<div><span><span class="major">${priceMajor}</span><span class="minor">,${priceMinor} TL</span></span></div>`;
+        price.innerHTML = `
+          <div>
+            <span><span class="major">${priceMajor}</span><span class="minor">,${priceMinor} TL</span></span>
+          </div>`;
       }
 
       const heart = document.createElement("span");
@@ -289,10 +306,14 @@
     rightArrow.onclick = () => wrap.scrollBy({ left: 250, behavior: "smooth" });
 
     const container = document.createElement("div");
-    container.style.position = "relative";
-    container.style.background = "transparent";
-    container.style.boxShadow = "none";
-    container.style.borderRadius = "0";
+    container.style.cssText = `
+      position: relative;
+      background: #f8f9fa;   
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.06);
+      padding: 20px 0 10px;
+      margin: 20px 0;
+    `;
     container.appendChild(title);
     container.appendChild(leftArrow);
     container.appendChild(rightArrow);
