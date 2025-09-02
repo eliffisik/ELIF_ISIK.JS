@@ -35,6 +35,20 @@ This project is a custom-built product carousel created using only vanilla JavaS
 3. Paste the contents of the JavaScript file and press Enter
 4. The carousel will be rendered above the "Sizin için Seçtiklerimiz" section
 
+ ##  Product Carousel Section
+
+This project includes a responsive and scrollable product carousel titled **"Beğenebileceğinizi düşündüklerimiz"**. It displays product cards fetched from a remote JSON source, with the following features:
+
+- Horizontal scroll with left/right arrow buttons
+- Responsive layout (5 items desktop, 3 tablet, 2 mobile)
+- Heart toggle to add/remove favorites (stored in `localStorage`)
+- Discount price and badge calculation
+- SVG arrow navigation buttons with enhanced visibility
+
+### Demo Screenshot
+
+![Product Carousel Preview](./productcorouseltask.png)
+
 ## File Structure
 
 ```bash
