@@ -222,7 +222,9 @@
       const priceMinor = (p.price % 1).toFixed(2).substring(2);
 
       if (p.price < p.original_price) {
-        const discountPercent = Math.round((1 - p.price / p.original_price) * 100);
+        const discountPercent = Math.round(
+          (1 - p.price / p.original_price) * 100
+        );
         const originalMajor = Math.floor(p.original_price);
         const originalMinor = (p.original_price % 1).toFixed(2).substring(2);
         price.innerHTML = `<div> <del><span class="major_del"><del>${originalMajor}</span><span class="minor_del">,${originalMinor} TL</span></del><span class="elif-disc">%${discountPercent}</span></div><div><strong><span class="major">${priceMajor}</span><span class="minor">,${priceMinor} TL</span></strong></div>`;
@@ -305,9 +307,11 @@
     const { wrap } = buildCarousel(products);
 
     const refHeading = [...document.querySelectorAll("h2")].find(
-      (el) => el.textContent?.trim().toLowerCase() === "sizin için seçtiklerimiz"
+      (el) =>
+        el.textContent?.trim().toLowerCase() === "sizin için seçtiklerimiz"
     );
-    const container = refHeading?.closest("section") || refHeading?.parentElement;
+    const container =
+      refHeading?.closest("section") || refHeading?.parentElement;
     container?.parentElement?.insertBefore(wrap, container);
   })();
 })();
